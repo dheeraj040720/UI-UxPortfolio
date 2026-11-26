@@ -8,4 +8,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Browser client uses ONLY the public anon key; RLS protects private data.
-export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+// Use a valid-format fallback so missing env vars don't crash the app before React mounts.
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder-anon-key'
+);
