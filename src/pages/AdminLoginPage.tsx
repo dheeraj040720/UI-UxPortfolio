@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { isSupabaseConfigured, supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 
 export function AdminLoginPage() {
@@ -15,6 +15,10 @@ export function AdminLoginPage() {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+    if (!isSupabaseConfigured) {
+      setError('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Vercel Environment Variables and redeploy.');
+      return;
+    }
     setError('');
     setSubmitting(true);
 
